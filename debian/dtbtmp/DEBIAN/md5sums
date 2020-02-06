@@ -1,0 +1,16 @@
+73f635fdcffedb10ea1ff793c09ceade  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-i2c0.dtbo
+7f13d18ba63a241ac61e567a1699ae45  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-spi-add-cs1.dtbo
+534e51b27b5d30ba36f54e3188de53b8  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-uart4.dtbo
+c30d7a11a860a440386100c290fbac35  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-uart1.dtbo
+e24fc0b0a1f92e6e53e5b120571481b6  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-spi-jedec-nor.dtbo
+29a526de402a5a6afb49d5c7446aff27  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-pps-gpio.dtbo
+10468090e0156cc17568abe49ecf6764  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-uart2.dtbo
+fce88acce3665a622426af78779db74b  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-uart3.dtbo
+ef840844021e3c607aed595d74562e52  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/README.sun50i-a64-overlays
+ffa129828b264e192af724d69c1b56e6  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-w1-gpio.dtbo
+eef449ae47ad68d4f71eaf618f46a7c3  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-spi-spidev.dtbo
+d61a713f57d767b3a071e73b5c4bf2d0  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-fixup.scr
+da1e82e78c889a8afdbb5b14f1a9e467  boot/dtb-5.1.0-next-20190514-eureka/allwinner/overlay/sun50i-a64-i2c1.dtbo
+88cec0897276e9b0caf33fce6c447d6c  boot/dtb-5.1.0-next-20190514-eureka/allwinner/sun50i-a64-eureka.dtb
+e0a22b9eaf13f2390c37bf5ecd0d7108  usr/share/doc/linux-dtb-next-eureka/copyright
+cb99e4fc01ab0bff04172f490c820fb6  usr/share/doc/linux-dtb-next-eureka/changelog.Debian.gz

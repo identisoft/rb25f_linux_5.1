@@ -1,0 +1,39 @@
+Source: linux-5.1.0-next-20190514-eureka
+Section: kernel
+Priority: optional
+Maintainer: Impro Technologies <www.impro.net>
+Build-Depends: bc, kmod, cpio
+Homepage: http://www.kernel.org/
+
+Package: linux-image-next-eureka
+Architecture: arm64
+Description: Linux kernel, version 5.1.0-next-20190514-eureka
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 5.1.0-next-20190514-eureka.
+
+Package: linux-headers-next-eureka
+Architecture: arm64
+Description: Linux kernel headers for 5.1.0-next-20190514-eureka on arm64
+ This package provides kernel header files for 5.1.0-next-20190514-eureka on arm64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-libc-dev
+Section: devel
+Provides: linux-kernel-headers
+Architecture: arm64
+Description: Linux support headers for userspace development
+ This package provides userspaces headers from the Linux kernel.  These headers
+ are used by the installed headers for GNU glibc and other system libraries.
+
+Package: linux-image-next-eureka-dbg
+Section: debug
+Architecture: arm64
+Description: Linux kernel debugging symbols for 5.1.0-next-20190514-eureka
+ This package will come in handy if you need to debug the kernel. It provides
+ all the necessary debug symbols for the kernel and its modules.
+
+Package: linux-dtb-next-eureka
+Architecture: arm64
+Description: Linux DTB, version 5.1.0-next-20190514-eureka
+ This package contains device blobs from the Linux kernel, version 5.1.0-next-20190514-eureka

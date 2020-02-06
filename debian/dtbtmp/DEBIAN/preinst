@@ -1,0 +1,4 @@
+if [ -d /boot/dtb-5.1.0-next-20190514-eureka ]; then mv /boot/dtb-5.1.0-next-20190514-eureka /boot/dtb-5.1.0-next-20190514-eureka.old; fi
+if [ -d /boot/dtb.old ]; then rm -rf /boot/dtb.old; fi
+if [ -d /boot/dtb ]; then mv /boot/dtb /boot/dtb.old; fi
+exit 0

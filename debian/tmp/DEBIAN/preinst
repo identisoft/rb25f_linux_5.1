@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+
+# Pass maintainer script parameters to hook scripts
+export DEB_MAINT_PARAMS="$*"
+
+# Tell initramfs builder whether it's wanted
+export INITRD=Yes
+
+test -d /etc/kernel/preinst.d && run-parts --arg="5.1.0-next-20190514-eureka" --arg="/boot/vmlinuz-5.1.0-next-20190514-eureka" /etc/kernel/preinst.d
+
+# exit if we are running chroot
+if [ "$(stat -c %d:%i /)" != "$(stat -c %d:%i /proc/1/root/.)" ]; then exit 0; fi
+
+check_and_unmount (){
+	boot_device=$(mountpoint -d /boot)
+
+	for file in /dev/* ; do
+		CURRENT_DEVICE=$(printf "%d:%d" $(stat --printf="0x%t 0x%T" $file))
+		if [[ "$CURRENT_DEVICE" = "$boot_device" ]]; then
+			boot_partition=$file
+			break
+		fi
+	done
+
+	bootfstype=$(blkid -s TYPE -o value $boot_partition)
+	if [ "$bootfstype" = "vfat" ]; then
+		umount /boot
+		rm -f /boot/System.map* /boot/config* /boot/vmlinuz* /boot/Image /boot/uImage
+	fi
+}
+mountpoint -q /boot && check_and_unmount
+exit 0

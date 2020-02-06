@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+
+# Pass maintainer script parameters to hook scripts
+export DEB_MAINT_PARAMS="$*"
+
+# Tell initramfs builder whether it's wanted
+export INITRD=Yes
+
+test -d /etc/kernel/postinst.d && run-parts --arg="5.1.0-next-20190514-eureka" --arg="/boot/vmlinuz-5.1.0-next-20190514-eureka" /etc/kernel/postinst.d
+
+if [ "$(grep nand /proc/partitions)" != "" ] && [ "$(grep mmc /proc/partitions)" = "" ]; then
+	mkimage -A arm -O linux -T kernel -C none -a "0x40008000" -e "0x40008000" -n "Linux kernel" -d /boot/vmlinuz-5.1.0-next-20190514-eureka /boot/uImage  > /dev/null 2>&1
+	cp /boot/uImage /tmp/uImage
+	sync
+	mountpoint -q /boot || mount /boot
+	cp /tmp/uImage /boot/uImage
+	rm -f /boot/vmlinuz-5.1.0-next-20190514-eureka
+else
+	ln -sf vmlinuz-5.1.0-next-20190514-eureka /boot/Image || mv /boot/vmlinuz-5.1.0-next-20190514-eureka /boot/Image
+fi
+touch /boot/.next
+exit 0

@@ -1,0 +1,13 @@
+Package: linux-headers-next-eureka
+Source: linux-5.1.0-next-20190514-eureka
+Version: 5.59
+Architecture: arm64
+Maintainer: Impro Technologies <www.impro.net>
+Installed-Size: 71234
+Section: kernel
+Priority: optional
+Homepage: http://www.kernel.org/
+Description: Linux kernel headers for 5.1.0-next-20190514-eureka on arm64
+ This package provides kernel header files for 5.1.0-next-20190514-eureka on arm64
+ .
+ This is useful for people who need to build external modules

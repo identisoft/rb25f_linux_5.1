@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+# Pass maintainer script parameters to hook scripts
+export DEB_MAINT_PARAMS="$*"
+
+# Tell initramfs builder whether it's wanted
+export INITRD=Yes
+
+test -d /etc/kernel/postrm.d && run-parts --arg="5.1.0-next-20190514-eureka" --arg="/boot/vmlinuz-5.1.0-next-20190514-eureka" /etc/kernel/postrm.d
+exit 0

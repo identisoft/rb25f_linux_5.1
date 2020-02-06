@@ -1,0 +1,4 @@
+linux-5.1.0-next-20190514-eureka_5.59_arm64.buildinfo kernel optional
+linux-dtb-next-eureka_5.59_arm64.deb kernel optional
+linux-headers-next-eureka_5.59_arm64.deb kernel optional
+linux-image-next-eureka_5.59_arm64.deb kernel optional

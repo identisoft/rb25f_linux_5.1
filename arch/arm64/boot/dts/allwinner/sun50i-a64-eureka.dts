@@ -1,0 +1,690 @@
+/*
+ * Copyright (c) 2017 Icenowy Zheng <icenowy@aosc.xyz>
+ *
+ * Based on sun50i-a64-pine64.dts, which is:
+ *   Copyright (c) 2016 ARM Ltd.
+ *
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation; either version 2 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/dts-v1/;
+
+#include "sun50i-a64-sopine.dtsi"
+#include <dt-bindings/pwm/pwm.h>
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "SoPine with baseboard";
+	compatible = "pine64,sopine-baseboard", "pine64,sopine",
+		     "allwinner,sun50i-a64";
+
+	aliases {
+		ethernet0 = &emac;
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&r_pwm 0 50000 PWM_POLARITY_INVERTED>;
+		brightness-levels = <1 2 4 8 16 32 64 128 512>;
+		default-brightness-level = <8>;
+		enable-gpios = <&pio 7 10 GPIO_ACTIVE_HIGH>; /* LCD-BL-EN: PH10 */
+	};
+
+	hdmi-connector {
+		compatible = "hdmi-connector";
+		type = "a";
+
+		port {
+			hdmi_con_in: endpoint {
+				remote-endpoint = <&hdmi_out_con>;
+			};
+		};
+	};
+
+	wiegand_green_led {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Wiegand_Green_Led {
+			label = "Wiegand Green LED";
+			linux,code = <2>;
+			gpios = <&pio 6 2 0>;
+			debounce-interval = <40>;
+		};
+	};
+
+	wiegand_red_led {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Wiegand_Red_Led { 
+			label = "Wiegand Red LED";
+			linux,code = <3>;
+			gpios = <&pio 6 3 0>;
+		};
+	};
+
+	wiegand_buzzer {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Wiegand_Buzzer {
+			label  = "Wiegand Buzzer";
+			linux,code = <4>;
+			gpios = <&pio 6 4 0>;
+		};		
+	};
+
+	wiegand_hld {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Wiegand_Hld {
+			label = "Wiegand Hld";
+			linux,code = <5>;
+			gpios = <&pio 6 5 0>;
+		};		
+	};
+
+	wiegand_tamper {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Wiegand_Tamper {
+			label = "Wiegand Tamper";
+			linux,code = <6>;
+			gpios = <&pio 7 0 0>;
+		};		
+	};
+
+	anti_tamper {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Anti_Tamper {
+			label = "Anti-Tamper";
+			linux,code = <7>;
+			gpios = <&pio 7 9 0>;
+		};		
+	};
+
+	factory_default {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		Factory_Default {
+			label = "Factory Default";
+			linux,code = <8>;
+			gpios = <&pio 7 6 0>;
+		};		
+	};
+
+	uc_event_irq {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		status = "ok";
+
+		uc_event {
+			label = "Uc_Irq";
+			linux,code = <9>;
+			gpios = <&pio 1 3 0>;
+		};		
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		
+		heartbeat_led {
+			label = "heartbeat_led";
+			gpios = <&pio 1 5 1>;
+			default-state = "off";
+			linux,default-trigger = "heartbeat";
+		};
+		
+		cpu_led {
+			label = "cpu_led";
+			gpios = <&pio 1 6 1>;
+			default-state = "off";
+			linux,default-trigger = "cpu";
+		};
+		
+		relay {
+			label = "relay";
+			gpios = <&pio 7 7 0>;
+			default-state = "off";
+		};
+		
+		Wiegand_Green_Led {
+			label = "Wiegand_Green_Led";
+			gpios = <&pio 6 10 0>;
+			default-state = "off";
+		};
+		
+		Wiegand_Red_Led {
+			label = "Wiegand_Red_Led";
+			gpios = <&pio 6 11 0>;
+			default-state = "off";
+		};
+	
+		Wiegand_Buzzer {
+			label = "Wiegand_Buzzer";
+			gpios = <&pio 6 12 0>;
+			default-state = "off";
+		};
+		
+ 		Wiegand_Hld {
+			label = "Wiegand_Hld";
+			gpios = <&pio 6 13 0>;
+			default-state = "off";
+		};		
+		
+		Wiegand_Tamper {
+			label = "Wiegand_Tamper";
+			gpios = <&pio 7 1 0>;
+			default-state = "off";
+		};
+		
+		unused_gpio_01 {
+			label = "unused_gpio_1";
+			gpios = <&pio 1 2 0>; /*PB2*/
+			default-state = "off";
+		};
+		
+		unused_gpio_02 {
+			label = "unused_gpio_2";
+			gpios = <&pio 1 4 0>; /*PB4*/
+			default-state = "off";
+		};
+		
+		unused_gpio_03 {
+			label = "unused_gpio_3";
+			gpios = <&pio 1 7 0>; /*PB7*/
+			default-state = "off";
+		};
+		
+		unused_gpio_04 {
+			label = "unused_gpio_4";
+			gpios = <&pio 2 0 0>; /*PC0*/
+			default-state = "off";
+		};
+		
+		unused_gpio_05 {
+			label = "unused_gpio_5";
+			gpios = <&pio 2 2 0>; /*PC2*/
+			default-state = "off";
+		};
+		
+		unused_gpio_06 {
+			label = "unused_gpio_6";
+			gpios = <&pio 2 3 0>; /*PC3*/
+			default-state = "off";
+		};
+		
+		unused_gpio_07 {
+			label = "unused_gpio_7";
+			gpios = <&pio 2 4 0>; /*PC4*/
+			default-state = "off";
+		};
+		
+		unused_gpio_08 {
+			label = "unused_gpio_8";
+			gpios = <&pio 2 7 0>; /*PC7*/
+			default-state = "off";
+		};
+		
+		unused_gpio_09 {
+			label = "unused_gpio_9";
+			gpios = <&pio 3 0 0>; /*PD0*/
+			default-state = "off";
+		};
+		
+		unused_gpio_10 {
+			label = "unused_gpio_10";
+			gpios = <&pio 3 1 0>; /*PD1*/
+			default-state = "off";
+		};
+		
+		unused_gpio_11 {
+			label = "unused_gpio_11";
+			gpios = <&pio 3 2 0>; /*PD2*/
+			default-state = "off";
+		};
+		
+		unused_gpio_12 {
+			label = "unused_gpio_12";
+			gpios = <&pio 3 3 0>; /*PD3*/
+			default-state = "off";
+		};
+		
+		unused_gpio_13 {
+			label = "unused_gpio_13";
+			gpios = <&pio 3 4 0>; /*PD4*/
+			default-state = "off";
+		};
+		
+		unused_gpio_14 {
+			label = "unused_gpio_14";
+			gpios = <&pio 3 5 0>; /*PD5*/
+			default-state = "off";
+		};
+		
+		unused_gpio_15 {
+			label = "unused_gpio_15";
+			gpios = <&pio 3 6 0>; /*PD6*/
+			default-state = "off";
+		};
+		
+		unused_gpio_16 {
+			label = "unused_gpio_16";
+			gpios = <&pio 3 7 0>; /*PD7*/
+			default-state = "off";
+		};
+		
+		unused_gpio_17 {
+			label = "unused_gpio_17";
+			gpios = <&pio 3 8 0>; /*PD8*/
+			default-state = "off";
+		};
+		
+		unused_gpio_18 {
+			label = "unused_gpio_18";
+			gpios = <&pio 3 9 0>; /*PD9*/
+			default-state = "off";
+		};
+		
+		unused_gpio_19 {
+			label = "unused_gpio_19";
+			gpios = <&pio 3 12 0>; /*PD12*/
+			default-state = "off";
+		};
+		
+		unused_gpio_20 {
+			label = "unused_gpio_20";
+			gpios = <&pio 3 15 0>; /*PD15*/
+			default-state = "off";
+		};
+		
+		unused_gpio_21 {
+			label = "unused_gpio_21";
+			gpios = <&pio 3 16 0>; /*PD16*/
+			default-state = "off";
+		};
+		
+		/*DO NOTE ENABLE LED 22 - MDIO CLK LINES ARE LINKED ON BOARD*/
+/*		unused_gpio_22 {
+			label = "unused_gpio_22";
+			gpios = <&pio 3 19 0>; /*PD19*/
+/*			default-state = "off";
+		};*/
+		
+		unused_gpio_23 {
+			label = "unused_gpio_23";
+			gpios = <&pio 4 1 0>; /*PE1*/
+			default-state = "off";
+		};
+		
+		unused_gpio_24 {
+			label = "unused_gpio_24";
+			gpios = <&pio 4 14 0>; /*PE14*/
+			default-state = "off";
+		};
+		
+		unused_gpio_25 {
+			label = "unused_gpio_25";
+			gpios = <&pio 4 15 0>; /*PE15*/
+			default-state = "off";
+		};
+		
+		unused_gpio_26 {
+			label = "unused_gpio_26";
+			gpios = <&pio 4 16 0>; /*PE16*/
+			default-state = "off";
+		};
+		
+		unused_gpio_27 {
+			label = "unused_gpio_27";
+			gpios = <&pio 4 17 0>; /*PE17*/
+			default-state = "off";
+		};
+		
+		unused_gpio_28 {
+			label = "unused_gpio_28";
+			gpios = <&pio 5 0 0>; /*PF0*/
+			default-state = "off";
+		};
+		
+		unused_gpio_29 {
+			label = "unused_gpio_29";
+			gpios = <&pio 5 1 0>; /*PF1*/
+			default-state = "off";
+		};
+		
+		unused_gpio_30 {
+			label = "unused_gpio_30";
+			gpios = <&pio 5 2 0>; /*PF2*/
+			default-state = "off";
+		};
+		
+		unused_gpio_31 {
+			label = "unused_gpio_31";
+			gpios = <&pio 5 3 0>; /*PF3*/
+			default-state = "off";
+		};
+		
+		unused_gpio_32 {
+			label = "unused_gpio_32";
+			gpios = <&pio 5 4 0>; /*PF4*/
+			default-state = "off";
+		};
+		
+		unused_gpio_33 {
+			label = "unused_gpio_33";
+			gpios = <&pio 5 5 0>; /*PF5*/
+			default-state = "off";
+		};
+		
+		unused_gpio_34 {
+			label = "unused_gpio_34";
+			gpios = <&pio 5 6 0>; /*PF6*/
+			default-state = "off";
+		};
+		
+		unused_gpio_35 {
+			label = "unused_gpio_35";
+			gpios = <&pio 7 10 0>; /*PH10*/
+			default-state = "off";
+		};
+		
+		unused_gpio_36 {
+			label = "unused_gpio_36";
+			gpios = <&r_pio 0 3 0>; /*PL3*/
+			default-state = "off";
+		};
+		
+		unused_gpio_37 {
+			label = "unused_gpio_37";
+			gpios = <&r_pio 0 4 0>; /*PL4*/
+			default-state = "off";
+		};
+		
+		unused_gpio_38 {
+			label = "unused_gpio_38";
+			gpios = <&r_pio 0 5 0>; /*PL5*/
+			default-state = "off";
+		};
+		
+		unused_gpio_39 {
+			label = "unused_gpio_39";
+			gpios = <&r_pio 0 6 0>; /*PL6*/
+			default-state = "off";
+		};
+
+		unused_gpio_40 {
+			label = "unused_gpio_40";
+			gpios = <&r_pio 0 7 0>; /*PL7*/
+			default-state = "off";
+		};
+
+		unused_gpio_41 {
+			label = "unused_gpio_41";
+			gpios = <&r_pio 0 8 0>; /*PL8*/
+			default-state = "off";
+		};
+
+		unused_gpio_42 {
+			label = "unused_gpio_42";
+			gpios = <&r_pio 0 9 0>; /*PL9*/
+			default-state = "off";
+		};
+
+		unused_gpio_43 {
+			label = "unused_gpio_43";
+			gpios = <&r_pio 0 11 0>; /*PL11*/
+			default-state = "off";
+		};
+
+		unused_gpio_44 {
+			label = "unused_gpio_44";
+			gpios = <&r_pio 0 12 0>; /*PL12*/
+			default-state = "off";
+			};		
+	};
+
+	beeper {
+		compatible = "pwm-beeper";
+		pinctrl-names = "default";
+		pinctrl-0 = <&r_pwm_pin>;
+		pwms = <&r_pwm 0 4000 0>;
+	};
+};
+
+&ac_power_supply {
+	status = "okay";
+};
+
+&battery_power_supply {
+	status = "okay";
+};
+
+&codec {
+	status = "okay";
+};
+
+&codec_analog {
+	status = "okay";
+};
+
+&dai {
+	status = "okay";
+};
+
+&de {
+	status = "okay";
+};
+
+&dphy {
+	status = "okay";
+};
+
+&dsi {
+	vcc-dsi-supply = <&reg_dldo1>;		/* VCC3V3-DSI */
+	status = "okay";
+
+	panel@0 {
+		compatible = "feiyang,fy07024di26a30d";
+		reg = <0>;
+		avdd-supply = <&reg_dc1sw>;	/* VCC-LCD */
+		dvdd-supply = <&reg_dldo2>;	/* VCC-MIPI */
+		reset-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* LCD-RST: PD24 */
+		backlight = <&backlight>;
+	};
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&ehci1 {
+	status = "okay";
+};
+
+&emac {
+	pinctrl-names = "default";
+	pinctrl-0 = <&rmii_pins>;
+	phy-mode = "rmii";
+	phy-handle = <&ext_rmii_phy>;
+	phy-supply = <&reg_dc1sw>;
+	snps,reset-gpios = <&phy_reset_pins>;
+	snps,reset-active-low = <1>;
+	snps,reset-delay-us = <200>;
+	status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+	pcf8563@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+		clock-frequency = <400000>;
+		status = "okay";
+	};
+};
+
+&mdio {
+	ext_rmii_phy: ethernet-phy@0 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <0>;
+	};
+};
+
+&hdmi {
+	hvcc-supply = <&reg_dldo1>;
+	status = "okay";
+};
+
+&hdmi_out {
+	hdmi_out_con: endpoint {
+		remote-endpoint = <&hdmi_con_in>;
+	};
+};
+
+&mdio {
+	ext_rgmii_phy: ethernet-phy@1 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <1>;
+	};
+};
+
+&mmc2 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&mmc2_pins> ,<&mmc2_ds_pin>;
+        vmmc-supply = <&reg_dcdc1>;
+        vqmmc-supply = <&reg_dcdc1>;
+        bus-width = <8>;
+        non-removable;
+        cap-mmc-hw-reset;
+        status = "okay"; 
+};
+
+&ohci0 {
+	status = "okay";
+};
+
+&ohci1 {
+	status = "okay";
+};
+
+&reg_dc1sw {
+	regulator-name = "vcc-phy";
+};
+
+&reg_dldo1 {
+	regulator-min-microvolt = <3300000>;
+	regulator-max-microvolt = <3300000>;
+	regulator-name = "vcc-hdmi";
+};
+
+&reg_dldo2 {
+	regulator-min-microvolt = <3300000>;
+	regulator-max-microvolt = <3300000>;
+	regulator-name = "vcc-mipi";
+};
+
+&reg_dldo4 {
+	regulator-min-microvolt = <3300000>;
+	regulator-max-microvolt = <3300000>;
+	regulator-name = "vcc-wifi";
+};
+
+&simplefb_hdmi {
+	vcc-hdmi-supply = <&reg_dldo1>;
+};
+
+&r_pwm {
+	status = "okay";
+};
+
+&sound {
+	simple-audio-card,aux-devs = <&codec_analog>;
+	simple-audio-card,widgets = "Microphone", "Microphone Jack",
+				    "Headphone", "Headphone Jack";
+	simple-audio-card,routing =
+			"Left DAC", "AIF1 Slot 0 Left",
+			"Right DAC", "AIF1 Slot 0 Right",
+			"Headphone Jack", "HP",
+			"AIF1 Slot 0 Left ADC", "Left ADC",
+			"AIF1 Slot 0 Right ADC", "Right ADC",
+			"MIC2", "Microphone Jack";
+	status = "okay";
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pb_pins>;
+	status = "okay";
+};
+
+&usb_otg {
+	dr_mode = "host";
+	status = "okay";
+};
+
+&usbphy {
+	status = "okay";
+};
